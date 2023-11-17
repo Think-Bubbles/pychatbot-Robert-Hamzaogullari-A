@@ -1,12 +1,15 @@
-# Projet Python : pychatbot-Robert-Hamzaogullari-A
- 
+# First Python Project : Chatbot
 
-## Membres : 
+We've made a rudimentary chatbot capable of detecting the most and least important words in throughout multiple text files.
+
+## Contributors :
 - Robert William
 - HAMZAOGULLARI Batur
 
-## Notice d'utilisation :
+
+## Utilization :
 
 
+## Known bugs :
 
-## Liste des bugs connus :
+
