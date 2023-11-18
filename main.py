@@ -5,53 +5,63 @@ import os
 import math
 
 def list_of_files(directory, extension):
+    """
+    Sorts all every file name into a list
+    :param directory: String Folder containing all the files
+    :param extension: String the type of file you are looking for
+    :return: List with every file name including the extension
+    """
 
     file_names = []
+
     for filename in os.listdir(directory):
         if filename.endswith(extension):
             file_names.append(filename)
     return file_names
 
+# ___________________________________________Initial Speech related functions__________________________________________#
 
-def liste_nom_president(files : list) -> list:
+def president_last_name(files: list) -> list:
     """
-    écrit dans une nouvelle liste le nom de tous les présidents.
-    :param files: Liste des strings contenant les noms des fichiers
-    :return: Nouvelle liste contenant le nom de chaque président SANS DOUBLONS.
+    Extracts only the president name from the name of a folder
+    :param files: List of strings containing the full name of a file
+    :return: New liste containing the name of every president without any reoccurrences
     """
 
     extracted_names = []
-    for name in files:
+    for name in files:  # Browse through every file name
 
-        if name[-5].isdigit():      # If presidents give several speeches, remove the number at the end.
+        if name[-5].isdigit():  # If the president gives multiple speeches, then remove the number at the end
             # .isdigit() is used to observe whether the element is a digit or a character.
-            if name[11:-5] not in extracted_names:      # If his name has not already been saved in the list:
-                extracted_names.append(name[11:-5])     # we add it to the list
+
+            if name[11:-5] not in extracted_names:  # If his name has not already been saved in the list:
+                extracted_names.append(name[11:-5])  # -5 to remove the number
         else:
-            extracted_names.append(name[11:-4])         # In this case, there is no number to remove.
+            extracted_names.append(name[11:-4])  # In this case, there is no number to remove, only '.txt'
 
     return extracted_names
 
-def extract_full_name() -> dict:
-    """
-    assigns a first name to every last name given in the list.
-    :return: Nothing
-    """
-    dictionary_names = {}   # Dictionary where the keys are the last names and the values are the full names
 
-    file_names = open("nom_prenom", "r", encoding='utf-8')  # Open the text file with every last name and first name
-    liste = file_names.readlines()
+def president_first_name() -> dict:
+    """
+    Assigns a first name to every last name given in the list.
+    :return: Dictionary containing last names as keys and first names as values
+    """
 
-    for i in range(0, len(liste), 3):   # We step by 3 to gather the last name(line1) the first name(line2) and skip-
-                                        # -the empty line
-        dictionary_names[liste[i][5:-1]] = liste[i+1][8:-1] # The slices here allow use to remove any unnecessary text
+    dictionary_names = {}  # Dictionary where the keys are the last names and the values are the first names
+
+    file_names = open("nom_prenom", "r", encoding='utf-8')  # Text file containing every first and last name
+    lines = file_names.readlines()  # .readlines() turns the text file into a list
+
+    for i in range(0, len(lines), 3):  # Increment by three to skip the line that doesn't include anything
+        dictionary_names[lines[i][5:-1]] = lines[i + 1][8:-1]  # Remove any unnecessary letter
 
     return dictionary_names
 
-def afficher_noms(dico : dict):
+def president_full_name(dico : dict):
     """
-    PRINTS the last name of every president that gave a speech once
-    :param dico: List of strings containing the last name of every president.
+    PRINTS the full name of ever president
+    :param dico: List of strings containing the full name of every president.
     :return: Prints out every string in the list
     """
 
