@@ -89,7 +89,32 @@ def cleaned_speech(list_speeches):
 
         lowercase_file.close()  # Close the cleaned file
         normal_file.close()     # Close the unmodified speech.
+        
+#---------------------------------------------------Partie TF-IDF------------------------------------------------------#
 
+def TF_process(text_file : list):
+    """
+
+    :param file_name:
+    :return:
+    """
+
+    word_frequency = {}
+
+    text = open("./cleaned/" + text_file[0], "r", encoding="utf-8")
+    lines = text.readlines()
+
+    for line in lines:
+        words_in_line = line.split()
+
+        for word in words_in_line:
+            if word in word_frequency:
+                word_frequency[word] += 1
+            else:
+                word_frequency[word] = 1
+    text.close()
+
+    print(word_frequency)
 #------------------------------------------------Programme Principale--------------------------------------------------#
 
 directory = ".\speeches"
