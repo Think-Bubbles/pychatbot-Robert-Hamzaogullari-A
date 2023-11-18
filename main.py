@@ -32,9 +32,34 @@ def liste_nom_president(files : list) -> list:
 
     return extracted_names
 
+def extract_full_name() -> dict:
+    """
+    assigns a first name to every last name given in the list.
+    :return: Nothing
+    """
+    dictionary_names = {}   # Dictionary where the keys are the last names and the values are the full names
+
+    file_names = open("nom_prenom", "r", encoding='utf-8')  # Open the text file with every last name and first name
+    liste = file_names.readlines()
+
+    for i in range(0, len(liste), 3):   # We step by 3 to gather the last name(line1) the first name(line2) and skip-
+                                        # -the empty line
+        dictionary_names[liste[i][5:-1]] = liste[i+1][8:-1] # The slices here allow use to remove any unnecessary text
+
+    return dictionary_names
+
+def afficher_noms(dico : dict):
+    """
+    PRINTS the last name of every president that gave a speech once
+    :param dico: List of strings containing the last name of every president.
+    :return: Prints out every string in the list
+    """
+
+    for name in dico:
+        value = dico[name]
+        print("Nom: ", name, ", Prénom: ", value)
+
 #------------------------------------------------Programme Principale--------------------------------------------------#
 
 directory = ".\speeches"
 file_names = list_of_files(directory, "txt")
-
-print(liste_nom_president(file_names))
