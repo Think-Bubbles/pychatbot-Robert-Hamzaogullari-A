@@ -105,29 +105,31 @@ def cleaned_speech(list_speeches):
         
 #---------------------------------------------------Partie TF-IDF------------------------------------------------------#
 
-def TF_process(text_file : list):
+def TF_process(filename: str) -> dict:
     """
-
-    :param file_name:
-    :return:
+    Puts every word of a text (without any reoccurrences) and counts the amount of times it appears.
+    :param filename: String -> the name of the file
+    :return: Dictionary containing every word and how many times it appeared
     """
 
     word_frequency = {}
+    speech = open("./cleaned/" + filename, "r", encoding="utf-8")
+    lines = speech.readlines()
 
-    text = open("./cleaned/" + text_file[0], "r", encoding="utf-8")
-    lines = text.readlines()
+    for line in lines:  # Iterate through every line
+        words_in_line = line.split()  # .split() splits the line (string) into a list with all the words as elements
 
-    for line in lines:
-        words_in_line = line.split()
+        for word in words_in_line:  # Iterate through every word in the line
 
-        for word in words_in_line:
-            if word in word_frequency:
+            if word in word_frequency:  # If the word was already in our dictionary, add 1 to the word's counter
                 word_frequency[word] += 1
-            else:
-                word_frequency[word] = 1
-    text.close()
 
-    print(word_frequency)
+            else:  # In this case the word hasn't been seen before
+                word_frequency[word] = 1  # Set the word's counter to 1
+                
+        speech.close()  # Always good practice to close a file once we are done with it
+
+    return word_frequency
 
 def IDF_process(file_name : list):
     """
