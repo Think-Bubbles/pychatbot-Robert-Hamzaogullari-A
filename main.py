@@ -59,6 +59,37 @@ def afficher_noms(dico : dict):
         value = dico[name]
         print("Nom: ", name, ", Prénom: ", value)
 
+def cleaned_speech(list_speeches):
+    """
+    re-writes every speech in a new folder but everything is in lowercase
+    :param list_speeches: List of strings containing the file name of every speech
+    :return: Nothing
+    """
+
+    special_characters_remove = ["-", ".", ",", "!", "?", "\""]  # List of all the possible special characters to remove
+    for file_name in list_speeches: # Name of every file in the speeches folder
+
+        lowercase_file = open("./cleaned/" + file_name, "w", encoding='utf-8')  # Create a nex file with the same name-
+        # in the cleaned folder
+        normal_file = open("./speeches/" + file_name, "r", encoding='utf-8')    # Open the corresponding speech
+        lines = normal_file.readlines()  # Create a list containing every line in the speech
+
+        for line in lines:  # Iterate through every line in the speech
+            lowercase_line = line.lower()   # .lower() turns every letter into its lowercase counterpart
+
+            temp = ""
+            for letter in lowercase_line:   # Iterate through each letter on this line
+                if letter not in special_characters_remove:     # If it isn't any of the specified special characters
+                    if letter == "\'" or letter == "-":
+                        temp += " "  # Add a space instead
+                    else:
+                        temp += letter  # Remove it entirely
+
+            lowercase_file.write(temp)  # Write the newly modified line into our cleaned speech file
+
+        lowercase_file.close()  # Close the cleaned file
+        normal_file.close()     # Close the unmodified speech.
+
 #------------------------------------------------Programme Principale--------------------------------------------------#
 
 directory = ".\speeches"
