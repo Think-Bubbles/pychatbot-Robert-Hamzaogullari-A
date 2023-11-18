@@ -1,0 +1,17 @@
+Nom: Chirac
+Prénom: Jacques
+
+Nom: Giscard dEstaing
+Prénom: Valéry
+
+Nom: Hollande
+Prénom: François
+
+Nom: Macron
+Prénom: Emanuel
+
+Nom: Mitterrand
+Prénom: François
+
+Nom: Sarkozy
+Prénom: Nicolas
