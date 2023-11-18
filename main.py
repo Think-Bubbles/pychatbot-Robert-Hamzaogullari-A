@@ -71,34 +71,37 @@ def president_full_name(dico : dict):
 
 def cleaned_speech(list_speeches):
     """
-    re-writes every speech in a new folder but everything is in lowercase
+    Re-writes every speech in a new folder but removes special characters and turns everything into lowercase
     :param list_speeches: List of strings containing the file name of every speech
     :return: Nothing
     """
 
-    special_characters_remove = ["-", ".", ",", "!", "?", "\""]  # List of all the possible special characters to remove
-    for file_name in list_speeches: # Name of every file in the speeches folder
+    special_characters_remove = ["-", ".", ",", "!", "?"]  # List of all the possible special characters to remove
 
-        lowercase_file = open("./cleaned/" + file_name, "w", encoding='utf-8')  # Create a nex file with the same name-
+    for file_name in list_speeches:  # Name of every file in the speeches folder
+
+        lowercase_file = open("./cleaned/" + file_name, "w", encoding='utf-8')  # Create a new file with the same name-
         # in the cleaned folder
-        normal_file = open("./speeches/" + file_name, "r", encoding='utf-8')    # Open the corresponding speech
+        normal_file = open("./speeches/" + file_name, "r", encoding='utf-8')  # Open the corresponding speech
         lines = normal_file.readlines()  # Create a list containing every line in the speech
 
         for line in lines:  # Iterate through every line in the speech
-            lowercase_line = line.lower()   # .lower() turns every letter into its lowercase counterpart
 
-            temp = ""
-            for letter in lowercase_line:   # Iterate through each letter on this line
-                if letter not in special_characters_remove:     # If it isn't any of the specified special characters
-                    if letter == "\'" or letter == "-":
+            lowercase_line = line.lower()  # .lower() turns every letter into its lowercase counterpart
+            temp = ""  # New string
+
+            for letter in lowercase_line:  # Iterate through each letter on this line
+                if letter not in special_characters_remove:  # If it isn't any of the specified special characters
+                    if letter == "'" or letter == "-":  # Check if we need to remove the character by a space or not
                         temp += " "  # Add a space instead
                     else:
-                        temp += letter  # Remove it entirely
+                        temp += letter  # Add the letter
+                # Since we've created a new empty string 'Temp', if it is a special character we don't do anything
 
             lowercase_file.write(temp)  # Write the newly modified line into our cleaned speech file
 
         lowercase_file.close()  # Close the cleaned file
-        normal_file.close()     # Close the unmodified speech.
+        normal_file.close()  # Close the unmodified speech.
         
 #---------------------------------------------------Partie TF-IDF------------------------------------------------------#
 
