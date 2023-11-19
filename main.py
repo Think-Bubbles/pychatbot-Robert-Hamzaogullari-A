@@ -100,8 +100,10 @@ def cleaned_speech(list_speeches):
             lowercase_file.write(temp)  # Write the newly modified line into our cleaned speech file
 
         lowercase_file.close()  # Close the cleaned file
+
         normal_file.close()  # Close the unmodified speech.
-        
+        normal_file.close()     # Close the unmodified speech.
+
 #---------------------------------------------------Partie TF-IDF------------------------------------------------------#
 
 def TF_process(filename: str) -> dict:
