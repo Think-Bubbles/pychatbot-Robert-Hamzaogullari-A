@@ -76,7 +76,7 @@ def cleaned_speech(list_speeches):
     :return: Nothing
     """
 
-    special_characters_remove = ["-", ".", ",", "!", "?"]  # List of all the possible special characters to remove
+    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\""]  # Every possible special characters to remove
 
     for file_name in list_speeches:  # Name of every file in the speeches folder
 
@@ -86,7 +86,6 @@ def cleaned_speech(list_speeches):
         lines = normal_file.readlines()  # Create a list containing every line in the speech
 
         for line in lines:  # Iterate through every line in the speech
-
             lowercase_line = line.lower()  # .lower() turns every letter into its lowercase counterpart
             temp = ""  # New string
 
