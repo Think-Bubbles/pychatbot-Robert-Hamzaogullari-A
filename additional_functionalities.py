@@ -61,7 +61,7 @@ def request_most_repeated_word(directory: str, president: str):
     :return: Str
     """
 
-    total_speeches = tf_idf_related.process_TF_by_president(list_of_files(directory, "txt"), "Chirac")
+    total_speeches = tf_idf_related.process_TF_by_president(list_of_files(directory, "txt"), president)
     # If the president has given multiple speeches then we will combine the TF scores of all of his speeches
     frequent_words = []
     highest_value = None
@@ -105,15 +105,16 @@ def request_highest_said(word: str):
         elif tf_idf_related.process_TF_by_president(list_fill_names, name)[word] == temp:
             presidents_names.append(name)
 
-    if len(presidents_names) == 1:
+    if len(nomPresident) == 1:
+        pass
+    elif len(presidents_names) == 1:
         print("The only president who talked about it most was:", presidents_names[0])
 
-    else:
+    elif len(presidents_names) > 1:
         print("The presidents who talked about it the most are:", end="")
         for president in range(len(presidents_names) - 1):
             print(presidents_names[president], end=", ")
         print("and", presidents_names[-1])
-
 
 def request_word_search(directory, word: str):
     """
@@ -124,9 +125,10 @@ def request_word_search(directory, word: str):
     """
 
     list_highest_sums = []
-    for element in range(len(list_of_files(directory, "txt"))):
-        if tf_idf_dict[word][element] != 0:  # If the value is different to 0 then it was in the text
-            list_highest_sums.append(element)
+    if word in tf_idf_dict.keys():
+        for element in range(len(list_of_files(directory, "txt"))):
+            if tf_idf_dict[word][element] != 0:  # If the value is different to 0 then it was in the text
+                list_highest_sums.append(element)
 
     presidents_names = []
     for i in list_highest_sums:  # We'll gather the presidents names in this loop
