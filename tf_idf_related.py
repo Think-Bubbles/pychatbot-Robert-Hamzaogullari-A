@@ -183,7 +183,24 @@ def process_TF_IDF(directory: str):
 
     return dict_TF_IDF
 
+def process_TF_IDF_conversion(directory: str):
+    """
+    Since we initially made our TF-IDF score using a dictionary, we decided to make a function that would convert it
+    into a 2D array like we were originally supposed to.
+    :param directory:
+    :return: 2D array, each line is a word and the columns are it's TF-IDF score for every file
+    """
 
+    list_file_names = list_of_files(directory, "txt")
+    score_IDF = process_IDF(directory)
+    all_keys = sort_by_selection(list_words(directory))
+    final = process_TF_IDF(directory)
+    list_TF_IDF = []
+
+    for word in all_keys:
+        list_TF_IDF.append(final[word])
+
+    return list_TF_IDF
 
 def process_final_2DArray(directory: str):
     """
