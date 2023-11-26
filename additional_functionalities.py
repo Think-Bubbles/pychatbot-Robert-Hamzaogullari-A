@@ -178,9 +178,16 @@ def request_common_words():
     for words in common_words:
         print(words, end=", ")
 
+def request_highest_tf_idf_file(directory):
+    for i in range(8):  # Loop to browse text by text
+        temp, index = 0, 0  # Store the score and the position of the highest value
 
-
-
+        for j in range(len(tf_idf_array)):  # Loop to browse TF-IDF scores of word in a text
+            if tf_idf_array[j][i] > temp:  # If we find a new highest score
+                temp = tf_idf_array[j][i]  # We update temp and index with new word's data
+                index = j
+        print("for the text", i + 1, ": ", all_words[index])
+        # After each browsing all the words in a text we print the one with the highest score and pass to the next text
 
 
 director = "./cleaned/"

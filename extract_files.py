@@ -1,5 +1,6 @@
 import os
 
+
 def list_of_files(directory, extension):
     """
     Sorts all every file name into a list

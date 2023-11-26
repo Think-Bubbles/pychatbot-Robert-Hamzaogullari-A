@@ -183,6 +183,7 @@ def process_TF_IDF(directory: str):
 
     return dict_TF_IDF
 
+
 def process_TF_IDF_conversion(directory: str):
     """
     Since we initially made our TF-IDF score using a dictionary, we decided to make a function that would convert it
@@ -201,6 +202,7 @@ def process_TF_IDF_conversion(directory: str):
         list_TF_IDF.append(final[word])
 
     return list_TF_IDF
+
 
 def process_final_2DArray(directory: str):
     """
