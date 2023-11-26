@@ -21,7 +21,7 @@ while True:
     print("-4- Print the presidents who talked about \"Nation\" and the one who repeated it the most")
     print("-5- Print the first president who talked about climate and/or ecology")
     print("-6- Print the words that all presidents mentioned apart from the \"unimportant words\"")
-    print("-7- For any")
+    print("-7- For any extra functionalities tailored to you")
     command = input()
 
     if command == "0":
@@ -50,23 +50,28 @@ while True:
         while True:
             print("--Press a number to select a command--")
             print("-0- Return to the previous menu")
-            print("-1- Select a president to find out which word he said the most often")
-            print("-2- Select a word and find out which presidents mentioned it")
-            print("-3- Prints the most important word of every text")
+            print("-1- Select a number and any number that has an importance below it will be shown")
+            print("-2- Select a president to find out which word he said the most often")
+            print("-3- Select a word and find out which presidents mentioned it")
+            print("-4- Prints the most important word of every text")
 
             sub_command = input()
             if sub_command == "0":
                 break
             elif sub_command == "1":
+                lvl = float(input("Enter a number: "))
+                additional_functionalities.request_redundant_words(path_cleaned, lvl)
+                print()
+            elif sub_command == "2":
                 print(text_treatment.president_last_name(list_file_names))
                 pres = input("Select any of the following presidents: ")
                 additional_functionalities.request_most_repeated_word(path_cleaned, pres)
                 print()
-            elif sub_command == "2":
+            elif sub_command == "3":
                 wor = input("Enter a word: ")
                 additional_functionalities.request_highest_said(wor)
                 print()
-            elif sub_command == "3":
+            elif sub_command == "4":
                 additional_functionalities.request_highest_tf_idf_file(path_cleaned)
                 print()
             else:

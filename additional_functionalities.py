@@ -166,7 +166,7 @@ def request_common_words():
 
     common_words = []
     for word in all_words:
-        said = True # We'll presume that the word was said
+        said = False     # We'll presume that the word was said
         for name in names:
             if (word in tf_idf_related.process_TF_by_president(files, name).keys()) and (IDF[word] != 0):
                 said = True     # Indeed it was
