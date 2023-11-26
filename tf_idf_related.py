@@ -182,3 +182,33 @@ def process_TF_IDF(directory: str):
             dict_TF_IDF[key].append(final_value)
 
     return dict_TF_IDF
+
+
+
+def process_final_2DArray(directory: str):
+    """
+    We also just wanted to show that we were capable of making it with a 2D array from the start.
+    :param directory:
+    :return:
+    """
+
+    list_file_names = list_of_files(directory, "txt")
+    score_IDF = process_IDF(directory)
+    all_keys = sort_by_selection(list_words(directory))
+    list_TF_IDF = []
+
+    for i in range(len(all_keys)):
+
+        temp = []
+        for file in list_file_names:
+
+            score_TF = process_TF(file)
+
+            if all_keys[i] not in score_TF.keys():
+                final_value = 0
+            else:
+                final_value = score_TF[all_keys[i]] * score_IDF[all_keys[i]]
+            temp.append(final_value)
+        list_TF_IDF.append(temp)
+
+    return list_TF_IDF

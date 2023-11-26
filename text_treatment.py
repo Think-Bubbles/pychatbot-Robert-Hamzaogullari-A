@@ -1,6 +1,6 @@
 
 
-# ______________________________________________Programs that clean speeches____________________________________________#
+# _____________________________________________Programs that clean speeches____________________________________________#
 
 
 def president_last_name(files: list) -> list:
@@ -85,8 +85,3 @@ def cleaned_speech(list_speeches):
 
         lowercase_file.close()  # Close the cleaned file
         normal_file.close()  # Close the unmodified speech.
-        
-        
-        
-        
-        
