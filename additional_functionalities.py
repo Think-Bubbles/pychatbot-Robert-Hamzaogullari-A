@@ -85,9 +85,98 @@ def request_most_repeated_word(directory: str, president: str):
         print("The most repeated word by president", president, "was:", frequent_words[0], "| It was said",
               highest_value, "times.")
 
+def request_highest_said(word: str):
+    """
+
+    :param word:
+    :return:
+    """
+
+    nomPresident = request_word_search(director, word)  # All the presidents who said the word
+    temp = 0
+    presidents_names = []
+
+    for name in nomPresident:
+        if tf_idf_related.process_TF_by_president(list_fill_names, name)[word] > temp:
+            # If the current presidents used the word more than the one stored in the temp
+            temp = tf_idf_related.process_TF_by_president(list_fill_names, name)[word]
+            # We replace the temp with the new president's TF score
+            presidents_names = [name]  # And update the name
+        elif tf_idf_related.process_TF_by_president(list_fill_names, name)[word] == temp:
+            presidents_names.append(name)
+
+    if len(presidents_names) == 1:
+        print("The only president who talked about it most was:", presidents_names[0])
+
+    else:
+        print("The presidents who talked about it the most are:", end="")
+        for president in range(len(presidents_names) - 1):
+            print(presidents_names[president], end=", ")
+        print("and", presidents_names[-1])
 
 
+def request_word_search(directory, word: str):
+    """
 
+    :param directory:
+    :param word:
+    :return:
+    """
+
+    list_highest_sums = []
+    for element in range(len(list_of_files(directory, "txt"))):
+        if tf_idf_dict[word][element] != 0:  # If the value is different to 0 then it was in the text
+            list_highest_sums.append(element)
+
+    presidents_names = []
+    for i in list_highest_sums:  # We'll gather the presidents names in this loop
+
+        if list_fill_names[i][11:-4][-1].isdigit():
+            if list_fill_names[i][11:-5] not in presidents_names:
+                presidents_names.append(list_fill_names[i][11:-5])
+        else:
+            if list_fill_names[i][11:-4] not in presidents_names:
+                presidents_names.append(list_fill_names[i][11:-4])
+
+    if presidents_names == []:
+        print("No president talked about", word)
+
+    elif len(presidents_names) == 1:
+        print("The only president to talk about \"", word, "\" was: ", presidents_names[0])
+
+    else:
+        print("These are the presidents that talked about \"", word, "\" are: ", end="")
+        for president in range(len(presidents_names) - 1):
+            print(presidents_names[president], end=", ")
+        print("and", presidents_names[-1])
+
+    return presidents_names
+
+def request_common_words():
+    """
+
+    :return:
+    """
+
+    names = text_treatment.president_last_name(list_of_files(director, "txt"))
+    files = list_of_files(director, "txt")
+    IDF = tf_idf_related.process_IDF(director)
+
+    common_words = []
+    for word in all_words:
+        said = True # We'll presume that the word was said
+        for name in names:
+            if (word in tf_idf_related.process_TF_by_president(files, name).keys()) and (IDF[word] != 0):
+                said = True     # Indeed it was
+            else:
+                said = False    # It wasn't said by this a president
+                break
+        if said:
+            common_words.append(word)   # It was said by everyone
+
+    print("Aside from the \"unimportant words\", the words that all presidents used are: ", end="")
+    for words in common_words:
+        print(words, end=", ")
 
 
 
