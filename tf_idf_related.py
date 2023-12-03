@@ -149,7 +149,7 @@ def process_IDF(directory: str):
     for key in appearance_frequency.keys():
         # This final  loop just calculates the IDF value, in other words: the word's significance.
 
-        IDF[key] = log10((number_of_documents / appearance_frequency[key]) + 1)
+        IDF[key] = log10(number_of_documents / appearance_frequency[key])
     return IDF
 
 
