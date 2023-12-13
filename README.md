@@ -1,9 +1,11 @@
-# 💻EFREI Python Project : Chatbot
+<p align="center" width="100%">
+    <img width="33%" src="https://github.com/Think-Bubbles/pychatbot-Robert-Hamzaogullari-A/blob/main/Image%20Efrei%20RM.png">
+</p>
 
 
+Welcome to our Chatbot project – a Python-based chatbot designed to provide custom-generated answers and retrieve information from text files.
 
-We've made a very rudimental Chatbot, which is capable of analysing text files in a specified path (location). It can do basic things such as detect the most important word in a file or throughout the folder, check if a word was said, what the least important words are, etc.
-
+Instructions | Installation |
 
 
 ## Contributors :
@@ -11,13 +13,16 @@ We've made a very rudimental Chatbot, which is capable of analysing text files i
 - Robert William
 - HAMZAOGULLARI Batur
 
-## How to use :
+## User guide :
 
-Upon running the program you will be met with a very simple guide:                            enter 0 if you wish to end the program, and enter any other number or word it tells you to.
+As mentioned earlier, our Chatbot is capable of 2 seperate things, but in order for it to function, it needs text files.
+Once you run the program, you will be presented X a series of instructions : By entering "0", you either end the program or return to the previous section (this will clearly be indicated), by entering "1", you will gain access to the "custom questions" aspect of the chatbot. By entering "2", you will enter the other functionality of our project : extracting and interpreting specific information.
 
-## Additional requirements:
+## Installation
 
-None as of 26/11
+TIn order to use this program, please insure that you have the following installed
+- [Python](https://www.python.org/downloads/) version 3.9 or later
+- [Math library](https://pypi.org/project/python-math/#files) in case you don't already have it
 
 ## Known bugs :
 
