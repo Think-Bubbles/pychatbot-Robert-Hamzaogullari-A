@@ -85,3 +85,25 @@ def cleaned_speech(list_speeches):
 
         lowercase_file.close()  # Close the cleaned file
         normal_file.close()  # Close the unmodified speech.
+
+def cleaned_text(text):
+    """
+    Instead of taking in a directory, this function only needs text
+    :param text: Str the text that you want filtered
+    :return: Str after being "standardized
+    """
+
+    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\""]  # Every possible special character to remove
+
+    temp = ""  # New string
+    lowercase_text = text.lower()  # .lower() turns every letter into its lowercase counterpart
+
+    for letter in lowercase_text:  # Iterate through each letter on this line
+        if letter not in special_characters_remove:  # If it isn't any of the specified special characters
+            if letter == "'" or letter == "-":  # Check if we need to remove the character by a space or not
+                temp += " "  # Add a space instead
+            else:
+                temp += letter  # Add the letter
+        # Since we've created a new empty string 'Temp', if it is a special character we don't do anything
+
+    return temp
