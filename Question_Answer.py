@@ -136,3 +136,28 @@ def similarity_calculation(vector1: list, vector2: list):
     """
     finalscore = vector_dot_product(vector1, vector2) / (vector_norm(vector1) * vector_norm(vector2))
     return finalscore
+
+def most_relevant_document(question_tf_idf, folder_tf_idf, list_files):
+    """
+    Given two sets of TF-IDF scores, it'll compare every Folder's TF-IDF score to the question's TF-IDF and determine
+    the most resembling folder
+    :param question_tf_idf: TF_IDF score of the question
+    :param folder_tf_idf: TF_IDF score of the main folder without considering the question
+    :param list_files: List of all the files in the folder we're working with
+    :return: Name of the most similar file
+    """
+
+    mostRelevantDocument = 0
+    temp = 0
+
+    for i in range(len(files)):
+
+        temp_array = []
+        for j in range(len(folder_tf_idf)):
+            temp_array.append(folder_tf_idf[j][i])
+
+        if similarity_calculation(question_tf_idf, temp_array) > temp:  # If we find a new and more similar document
+            temp = similarity_calculation(question_tf_idf, temp_array)
+            mostRelevantDocument = list_files[i]  # Remember the name of file
+
+    return mostRelevantDocument
