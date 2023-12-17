@@ -46,3 +46,56 @@ def search_related_words(list_of_words: list) -> list:
         if word in every_word:  # If a word in the given list was said at least once in the overall list of words
             related_words.append(word)
     return related_words
+
+
+def question_TF(list_of_words: list):
+    """
+    Given a list of words, it'll return the TF score of an entered list
+    :param list_of_words: liste of strings
+    :return: List of Integers
+    """
+
+    question_TF_scores = {}  # Overall same steps as the TF function in tf_idf_related
+
+    for word in list_of_words:
+        if word in question_TF_scores:
+            question_TF_scores[word] += 1
+        else:
+            question_TF_scores[word] = 1
+
+    return question_TF_scores
+
+
+def question_TF_IDF(words_dict_TF: dict):
+    """
+    Determines the TF-IDF score of each word in a given sentence
+    :param words_dict_TF: Dictionary containing the TF scores for all the words in a given list
+    :return: Dictionary containing the TF-IDF scores of all those words
+    """
+
+    question_dict_TF_IDF = score_IDF  # Keep the same pre-existing IDF scores
+
+    for word in question_dict_TF_IDF.keys():
+
+        if word in words_dict_TF:
+            question_dict_TF_IDF[word] = score_IDF[word] * words_dict_TF[word]  # Same IDF times the question's TF
+        else:
+            question_dict_TF_IDF[word] = 0  # If a word in the folders text files isn't in the question we don't care
+
+    return question_dict_TF_IDF
+
+
+def TF_IDF_conversion(TF_IDF_dict: dict):
+    """
+    Converts a TF_IDF score from a dictionary into the form of a 2D array
+    :param TF_IDF_dict: Dictionary with strings as keys and integers as values
+    :return:
+    """
+
+    list_TF_IDF = []  # Empty list
+
+    for word in all_keys:
+        list_TF_IDF.append(TF_IDF_dict[word])  # Fill the list with sub-lists making it a 2D array
+
+    return list_TF_IDF
+
