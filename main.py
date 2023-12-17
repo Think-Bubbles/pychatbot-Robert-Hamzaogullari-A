@@ -1,10 +1,10 @@
 # Chatbot EFREI L1
 # William ROBERT | Batur HAMZAOGULLARI
-
 from extract_files import *
 import text_treatment
 import tf_idf_related
 import additional_functionalities
+import Question_Answer
 
 # -----------------------------------------------Programme Principale--------------------------------------------------#
 
@@ -12,22 +12,21 @@ path = "./speeches/"
 path_cleaned = "./cleaned/"
 list_file_names = list_of_files(path, "txt")
 text_treatment.cleaned_speech(list_file_names)
+
 while True:
     print("--Press a number to select a command--")
     print("-0- Exit")
-    print("-1- Chatbot")
-    print("-2- specific")
+    print("-1- Access functionalities")
+    print("-2- Chat mode")
 
-    main_command = input()
+    global_command = input()
 
-    if main_command == "0":
+    if global_command == "0":
         break
-    elif main_command == "1":
-        print("nothing yet")
-    elif main_command == "2":
+    elif global_command == "1":
         while True:
             print("--Press a number to select a command--")
-            print("-0- Exit")
+            print("-0- Return to main menu")
             print("-1- Print the least important words in the corpus")
             print("-2- Print the words with the highest TF-IDF score")
             print("-3- Print the most repeated words by president Chirac")
@@ -40,7 +39,7 @@ while True:
             if command == "0":
                 break
             elif command == "1":
-                additional_functionalities.request_redundant_words(path_cleaned, 0)
+                additional_functionalities.request_redundant_words(path_cleaned, 0.0)
                 print()
             elif command == "2":
                 additional_functionalities.request_highest_tf_idf(path_cleaned)
@@ -93,7 +92,22 @@ while True:
             else:
                 print("Invalid command")
                 print()
-    else:
-        print("Invalid command")
-        print()
+    elif global_command == "2":
+        print("Welcome to the custom question area! \n Please make sure that your question doesn't have any typos in order"
+              "to maintain optimal performances. \n If you spot any errors or inconsistencies please inform one of the main contributors.")
+
+        user_question = input("Please enter your question: ")
+        while type(user_question) != str :
+            print("Please enter a sentence!")
+            user_question = input("Please enter your question: ")
+
+        new_question = Question_Answer.tokenise_question(user_question)
+        related_new_question = Question_Answer.search_related_words(new_question)
+        related_TF = Question_Answer.question_TF(related_new_question)
+        related_TF_IDF = Question_Answer.question_TF_IDF(related_TF, path_cleaned)
+        related_conversion = Question_Answer.TF_IDF_conversion(related_TF_IDF)
+        similar_document = Question_Answer.most_relevant_document(related_conversion, Question_Answer.score_TF_IDF_Array, files)
+        question_important_word = Question_Answer.highest_tf_idf(related_TF_IDF)
+
+        print(Question_Answer.response_generation(similar_document, question_important_word, user_question))
 
