@@ -1,5 +1,12 @@
+"""                                         Nom du projet : Chatbot EFREI L1
+                                     Auteurs : William ROBERT | Batur HAMZAOGULLARI
 
-
+In order for any of our operations to work, we need a way for our programs to understand any given text in any of the
+files in a specified directory, this file takes care of this. It extracts file names and uses those to determine who
+said what (like which president corresponds to which speech). It also "cleans" the text, meaning that it filters out
+any punctuation, turns all the text into lowercase. It overall makes it easier to extract information and better
+utilize the TF-IDF method in the other files.
+"""
 # _____________________________________________Programs that clean speeches____________________________________________#
 
 
@@ -60,7 +67,7 @@ def cleaned_speech(list_speeches):
     :return: Nothing
     """
 
-    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\""]  # Every possible special characters to remove
+    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\""]  # Every possible special character to remove
 
     for file_name in list_speeches:  # Name of every file in the speeches folder
 
@@ -85,6 +92,7 @@ def cleaned_speech(list_speeches):
 
         lowercase_file.close()  # Close the cleaned file
         normal_file.close()  # Close the unmodified speech.
+
 
 def cleaned_text(text):
     """
