@@ -169,7 +169,6 @@ def process_TF_IDF(directory: str):
     """
 
     list_file_names = extract_files.list_of_files(directory, "txt")
-    score_IDF = process_IDF(directory)
 
     all_keys = (list_words(directory))  # Add every word into a list and then sort the list
     dict_TF_IDF = {key: [] for key in all_keys}
@@ -199,8 +198,6 @@ def process_TF_IDF_conversion(directory: str):
     :return: 2D array, each line is a word and the columns are it's TF-IDF score for every file
     """
 
-    list_file_names = extract_files.list_of_files(directory, "txt")
-    score_IDF = process_IDF(directory)
     all_keys = sort_by_selection(list_words(directory))
     final = process_TF_IDF(directory)
     list_TF_IDF = []
@@ -219,7 +216,7 @@ def process_final_2DArray(directory: str):
     """
 
     list_file_names = extract_files.list_of_files(directory, "txt")
-    score_IDF = process_IDF(directory)
+    score_IDF_intern = process_IDF(directory)
     all_keys = sort_by_selection(list_words(directory))
     list_TF_IDF = []
 
@@ -238,3 +235,6 @@ def process_final_2DArray(directory: str):
         list_TF_IDF.append(temp)
 
     return list_TF_IDF
+
+
+score_IDF = process_IDF("./cleaned/")
