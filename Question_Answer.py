@@ -99,6 +99,7 @@ def TF_IDF_conversion(TF_IDF_dict: dict):
 
     return list_TF_IDF
 
+
 def vector_norm(vector: list):
     """
     Determines the norm of a vector, meaning that it squares and sums every value in the vector and then square roots it
@@ -137,6 +138,7 @@ def similarity_calculation(vector1: list, vector2: list):
     finalscore = vector_dot_product(vector1, vector2) / (vector_norm(vector1) * vector_norm(vector2))
     return finalscore
 
+
 def most_relevant_document(question_tf_idf, folder_tf_idf, list_files):
     """
     Given two sets of TF-IDF scores, it'll compare every Folder's TF-IDF score to the question's TF-IDF and determine
@@ -161,3 +163,76 @@ def most_relevant_document(question_tf_idf, folder_tf_idf, list_files):
             mostRelevantDocument = list_files[i]  # Remember the name of file
 
     return mostRelevantDocument
+
+
+def highest_tf_idf(scores):
+    """
+    Given a set of different TF-IDF scores, this will return the one with the highest score
+    :param scores:  Can be either a dictionary with integers as values or a 2D array
+    :return: Str the word with the highest score
+    """
+
+    if type(scores) is dict:
+        highest_tf_idf_word = 0  # Stocks the highest TF-IDF value
+        for key in scores.keys():
+            if type(scores[key]) is list:  # If the dictionary has 1D arrays
+                total = 0
+                for value in scores[key]:  # Sum all the elements in the list
+                    total += value
+            else:  # If not then it's just an integer
+                total = scores[key]
+            if total > highest_tf_idf_word:  # If we find a new highest value
+                highest_tf_idf_word = scores[key]  # Keep track of the value
+                word = key  # Keep track of the word
+        return word
+
+    elif type(scores) is list:
+        highest_tf_idf_word = 0
+        line = 0
+        for line in range(len(scores)):
+            total = 0
+            for column in range(line):
+                total += scores[line][column]
+                if total > highest_tf_idf_word:  # We've found a new highest TF-IDF score
+                    highest_tf_idf_word = total
+                    index = line  # Since we've previously sorted all the words in the folder we can easily track
+                    # which word the value corresponds to
+        return all_keys[line]
+
+
+def response_generation(file_name: str, important_word: str, quest: str):
+    """
+    Based off of the most important word in a given sentence, you will get an answer from the most similar document
+    This response is very basic and not yet refined - only the rest of the sentence after the most important word.
+    :param quest: Str sentence that the user enters
+    :param file_name: Str name of the file the most resembles the sentence
+    :param important_word: Float word that has the highest TF-IDF score in the sentence
+    :return: Str the sentence in the document after the word has been spotted for the first time
+    """
+
+    question_starters = {"comment": "Après analyse, ", "pourquoi": "Car", "peux-tu": "Oui, bien sûr!",
+                         "quand": "Lors de l'événement, ", "où": "Dans cette région, "}
+    question = quest.lower().split()  # When we enter a question, it now doesn't matter if it's in lower or uppercase
+
+    file = open(path + file_name, "r", encoding='utf-8')
+    lines = file.read()
+    sentences = lines.split(".")  # Splits the document up sentence by sentence making the process much easier
+
+    final_answer = ""
+    for debuts in question_starters.keys():
+        if debuts == question[0]:  # If the beginning of the question is the same as the key
+            final_answer = question_starters[debuts] + " "  # Add a space for the next part
+            break
+
+    for sentence in sentences:
+        if important_word in sentence:  # If we find the word we're looking for
+            words_in_sentence = sentence.split()  # Split up the sentence into words
+            words_in_sentence[0] = words_in_sentence[0].lower()  # Incase the original sentence starts with an uppercase
+            for word in range(len(words_in_sentence) - 1):  # -1 to check the next word.
+                final_answer += words_in_sentence[word]
+                if words_in_sentence[word + 1] not in [",", ";", ":", "%",
+                                                       " £"]:  # Don't want to add unnecessary spaces
+                    final_answer += " "
+            final_answer += words_in_sentence[-1] + "."  # Add a full stop at the end to end the sentence correctly
+            break
+    return final_answer
