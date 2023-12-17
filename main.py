@@ -1,12 +1,17 @@
-# Chatbot EFREI L1
-# William ROBERT | Batur HAMZAOGULLARI
+"""                                         Nom du projet : Chatbot EFREI L1
+                                     Auteurs : William ROBERT | Batur HAMZAOGULLARI
+
+This is the main file where everything converges, only the menu is here, everything else is imported from the other
+files, rendering everything much easier to understand and trace back.
+"""
+# ______________________________________________Functions from part 2__________________________________________________#
+
 from extract_files import *
 import text_treatment
 import tf_idf_related
 import additional_functionalities
 import Question_Answer
 
-# -----------------------------------------------Programme Principale--------------------------------------------------#
 
 path = "./speeches/"
 path_cleaned = "./cleaned/"
@@ -93,8 +98,10 @@ while True:
                 print("Invalid command")
                 print()
     elif global_command == "2":
-        print("Welcome to the custom question area! \n Please make sure that your question doesn't have any typos in order"
-              "to maintain optimal performances. \n If you spot any errors or inconsistencies please inform one of the main contributors.")
+        print("Welcome to the custom question area! \n Please make sure that your question doesn't have any "
+              "typos in order to maintain optimal performances. \n If you spot any errors or inconsistencies please "
+              "inform one of the"
+              " main contributors.")
 
         user_question = input("Please enter your question: ")
         while type(user_question) != str :
@@ -104,7 +111,7 @@ while True:
         new_question = Question_Answer.tokenise_question(user_question)
         related_new_question = Question_Answer.search_related_words(new_question)
         related_TF = Question_Answer.question_TF(related_new_question)
-        related_TF_IDF = Question_Answer.question_TF_IDF(related_TF, path_cleaned)
+        related_TF_IDF = Question_Answer.question_TF_IDF(related_TF)
         related_conversion = Question_Answer.TF_IDF_conversion(related_TF_IDF)
         similar_document = Question_Answer.most_relevant_document(related_conversion, Question_Answer.score_TF_IDF_Array, files)
         question_important_word = Question_Answer.highest_tf_idf(related_TF_IDF)
