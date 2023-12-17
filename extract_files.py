@@ -1,3 +1,8 @@
+"""                                         Nom du projet : Chatbot EFREI L1
+                                     Auteurs : William ROBERT | Batur HAMZAOGULLARI
+
+We've decided to put this function into its own separate file in order to avoid circular importation issues.
+"""
 import os
 
 
@@ -15,3 +20,7 @@ def list_of_files(directory, extension):
         if filename.endswith(extension):
             file_names.append(filename)
     return file_names
+
+
+number_of_files = len(list_of_files("./cleaned/", ".txt"))
+files = list_of_files("./cleaned/", ".txt")
