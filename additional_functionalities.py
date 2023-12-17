@@ -1,9 +1,17 @@
+"""                                         Nom du projet : Chatbot EFREI L1
+                                     Auteurs : William ROBERT | Batur HAMZAOGULLARI
+
+Additional_functionalities - like the name suggests - adds a ton of different capabilities to the bot, and they're all made
+possible thanks to the operations made in the tf_idf_related file. Some of the things this file allows us to gather:
+the least important words, which president talked about what and who talked about it the most; the most repeated word
+by every president, etc.
+"""
+# ______________________________________________Additional functionalities_____________________________________________#
+
 import text_treatment
 import tf_idf_related
 from extract_files import list_of_files
 
-
-# ______________________________________________Additional functionalities_____________________________________________#
 
 def request_redundant_words(directory, level):
     """
@@ -56,21 +64,21 @@ def request_highest_tf_idf(directory):
 def request_most_repeated_word(directory: str, president: str):
     """
     Finds the most repeated word(s) said by any president
-    :param directory:
-    :param president: Str
-    :return: Str
+    :param directory: location of the folder containing the presidents text files
+    :param president: Str name of the president we want information about
+    :return: Str most repeated word(s)
     """
 
     total_speeches = tf_idf_related.process_TF_by_president(list_of_files(directory, "txt"), president)
     # If the president has given multiple speeches then we will combine the TF scores of all of his speeches
     frequent_words = []
     highest_value = None
-    for key in total_speeches.keys():   # Throughout all the words in all his speeches
+    for key in total_speeches.keys():  # Throughout all the words in all his speeches
 
-        if highest_value is None:   # Only for the first iteration
+        if highest_value is None:  # Only for the first iteration
             frequent_words.append(key)
             highest_value = total_speeches[key]
-        elif total_speeches[key] > highest_value:   # Add it to the list if we find a new highest value
+        elif total_speeches[key] > highest_value:  # Add it to the list if we find a new highest value
             frequent_words = [key]
             highest_value = total_speeches[key]
         elif highest_value == total_speeches[key]:  # Incase there are multiple words
@@ -84,6 +92,7 @@ def request_most_repeated_word(directory: str, president: str):
     else:
         print("The most repeated word by president", president, "was:", frequent_words[0], "| It was said",
               highest_value, "times.")
+
 
 def request_highest_said(word: str):
     """
@@ -115,6 +124,7 @@ def request_highest_said(word: str):
         for president in range(len(presidents_names) - 1):
             print(presidents_names[president], end=", ")
         print("and", presidents_names[-1])
+
 
 def request_word_search(directory, word: str):
     """
@@ -154,6 +164,7 @@ def request_word_search(directory, word: str):
 
     return presidents_names
 
+
 def request_common_words():
     """
 
@@ -166,19 +177,20 @@ def request_common_words():
 
     common_words = []
     for word in all_words:
-        said = False     # We'll presume that the word was said
+        said = False  # We'll presume that the word was said
         for name in names:
             if (word in tf_idf_related.process_TF_by_president(files, name).keys()) and (IDF[word] != 0):
-                said = True     # Indeed it was
+                said = True  # Indeed it was
             else:
-                said = False    # It wasn't said by this a president
+                said = False  # It wasn't said by this a president
                 break
         if said:
-            common_words.append(word)   # It was said by everyone
+            common_words.append(word)  # It was said by everyone
 
     print("Aside from the \"unimportant words\", the words that all presidents used are: ", end="")
     for words in common_words:
         print(words, end=", ")
+
 
 def request_highest_tf_idf_file(directory):
     for i in range(8):  # Loop to browse text by text
