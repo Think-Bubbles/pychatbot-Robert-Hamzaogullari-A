@@ -99,3 +99,40 @@ def TF_IDF_conversion(TF_IDF_dict: dict):
 
     return list_TF_IDF
 
+def vector_norm(vector: list):
+    """
+    Determines the norm of a vector, meaning that it squares and sums every value in the vector and then square roots it
+    :param: vector:
+    :return:
+    """
+
+    norm = 0
+    for item in vector:
+        norm += item ** 2  # Sum the squares of every value in the vector
+    norm = math.sqrt(norm)  # Square root the obtained sum
+    return norm
+
+
+def vector_dot_product(vector1: list, vector2: list):
+    """
+    Sums the multiplication of two different vectors and returns the value
+    :param vector1:
+    :param vector2:
+    :return: Dot product of two vectors
+    """
+
+    dot_product = 0
+    for i in range(len(vector1)):
+        dot_product += vector1[i] * vector2[i]
+    return dot_product
+
+
+def similarity_calculation(vector1: list, vector2: list):
+    """
+    Based off of the cosine similarity, it determines the similarity between two different vectors of the same dimension
+    :param vector1:
+    :param vector2:
+    :return:
+    """
+    finalscore = vector_dot_product(vector1, vector2) / (vector_norm(vector1) * vector_norm(vector2))
+    return finalscore
