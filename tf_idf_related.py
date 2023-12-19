@@ -9,6 +9,10 @@ TF-IDF score for all the files and every word. This is the very foundation of ou
 
 from math import log10
 import extract_files
+import text_treatment
+
+path = "./speeches/"
+cleaned_path = "./cleaned/"
 
 
 def sort_by_selection(liste: list):
@@ -49,7 +53,7 @@ def list_words(directory: str):
     """
 
     list_all_words = []
-    list_of_file_names = extract_files.list_of_files(directory, "txt")
+    list_of_file_names = extract_files.list_of_files(directory, ".txt")
 
     for file in list_of_file_names:  # Repeat for every file in the folder
         speech = open(directory + file, "r", encoding='utf-8')
@@ -67,7 +71,7 @@ def list_words(directory: str):
     return list_all_words
 
 
-def process_TF(filename: str) -> dict:
+def calcul_TF_dict(filename: str) -> dict:
     """
     Puts every word of a text (without any reoccurrences) and counts the amount of times it appears.
     :param filename: String -> the name of the file
@@ -94,19 +98,27 @@ def process_TF(filename: str) -> dict:
     return word_frequency
 
 
-def process_TF_by_president(list_file_names, president: str):
-    # list_every_file_names = list_of_files(directory, "txt")
+def calcul_TF_president_dict(list_file_names : list, president: str) -> dict:
+    """
+    Instead of sorting the TF scores out according to the different speech files this will make them according to the
+    president that gave the speech.
+    :param list_file_names: List of the names of every file in a specific folder
+    :param president: Str Name of the president we want the TF score for
+    :return: Dictionary containing a TF score that merges all of the president's speeches
+    """
+
     concerned_file_names = []
     for file_name in list_file_names:
-        if president in file_name:
+        file_name_standard = text_treatment.cleaned_text(file_name)
+        if text_treatment.cleaned_text(president) in file_name_standard:
             concerned_file_names.append(file_name)
 
-    total_speeches = process_TF(concerned_file_names[0])    # Clone the first speech's TF dictionary
+    total_speeches = calcul_TF_dict(concerned_file_names[0])    # Clone the first speech's TF dictionary
 
     if len(concerned_file_names) > 1:   # If the President gave more than 1 speech we need to combine all the TF scores
 
         for file in concerned_file_names[1:]:   # We already added his first speech so no need to add it again
-            tf_file = process_TF(file)
+            tf_file = calcul_TF_dict(file)
 
             for key in tf_file:
                 if key in total_speeches:   # If he's already said the word in any of his speeches so far, add the score
@@ -117,14 +129,14 @@ def process_TF_by_president(list_file_names, president: str):
     return total_speeches
 
 
-def process_IDF(directory: str):
+def calcul_IDF_dict(directory: str) -> dict:
     """
     Creates a dictionary containing every word throughout every file in a folder and calculates the word's importance
     :param directory: Path of the folder
     :return: Dictionary containing every word and its IDF score
     """
 
-    file_name = extract_files.list_of_files(directory, "txt")  # Create a list containing the name of every file.
+    file_name = extract_files.list_of_files(directory, ".txt")  # Create a list containing the name of every file.
     number_of_documents = len(file_name)  # Obtain the total amount of documents.
     appearance_frequency = {}  # Dictionary that counts the amount of documents a word appears in
 
@@ -160,7 +172,7 @@ def process_IDF(directory: str):
     return IDF
 
 
-def process_TF_IDF(directory: str):
+def calcul_TF_IDF_dict(directory: str) -> tuple:
     """
     Creates a dictionary containing the words as keys and a lists as values, each list contains the TF-IDF score
     for every document
@@ -168,7 +180,7 @@ def process_TF_IDF(directory: str):
     :return: Dictionary containing the words and all of their TF-IDF scores.
     """
 
-    list_file_names = extract_files.list_of_files(directory, "txt")
+    list_file_names = extract_files.list_of_files(directory, ".txt")
 
     all_keys = (list_words(directory))  # Add every word into a list and then sort the list
     dict_TF_IDF = {key: [] for key in all_keys}
@@ -179,7 +191,7 @@ def process_TF_IDF(directory: str):
 
         for file in list_file_names:
 
-            score_TF = process_TF(file)
+            score_TF = calcul_TF_dict(file)
 
             if key not in score_TF.keys():
                 final_value = 0
@@ -187,10 +199,10 @@ def process_TF_IDF(directory: str):
                 final_value = score_TF[key] * score_IDF[key]
             dict_TF_IDF[key].append(final_value)
 
-    return dict_TF_IDF
+    return dict_TF_IDF, all_keys
 
 
-def process_TF_IDF_conversion(directory: str):
+def process_TF_IDF_conversion(directory: str) -> list:
     """
     Since we initially made our TF-IDF score using a dictionary, we decided to make a function that would convert it
     into a 2D array like we were originally supposed to.
@@ -198,8 +210,7 @@ def process_TF_IDF_conversion(directory: str):
     :return: 2D array, each line is a word and the columns are it's TF-IDF score for every file
     """
 
-    all_keys = sort_by_selection(list_words(directory))
-    final = process_TF_IDF(directory)
+    final, all_keys = calcul_TF_IDF_dict(directory)
     list_TF_IDF = []
 
     for word in all_keys:
@@ -208,24 +219,23 @@ def process_TF_IDF_conversion(directory: str):
     return list_TF_IDF
 
 
-def process_final_2DArray(directory: str):
+def calcul_TF_IDF_matrix(directory: str, file_names : str) -> list:
     """
     We also just wanted to show that we were capable of making it with a 2D array from the start.
+    :param file_names:
     :param directory:
     :return:
     """
 
-    list_file_names = extract_files.list_of_files(directory, "txt")
-    score_IDF_intern = process_IDF(directory)
-    all_keys = sort_by_selection(list_words(directory))
+    all_keys = list_words(directory)
     list_TF_IDF = []
 
     for i in range(len(all_keys)):
 
         temp = []
-        for file in list_file_names:
+        for file in file_names:
 
-            score_TF = process_TF(file)
+            score_TF = calcul_TF_dict(file)
 
             if all_keys[i] not in score_TF.keys():
                 final_value = 0
@@ -237,4 +247,4 @@ def process_final_2DArray(directory: str):
     return list_TF_IDF
 
 
-score_IDF = process_IDF("./cleaned/")
+score_IDF = calcul_IDF_dict("./cleaned/")

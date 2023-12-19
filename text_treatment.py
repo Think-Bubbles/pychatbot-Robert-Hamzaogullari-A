@@ -39,7 +39,7 @@ def president_first_name() -> dict:
 
     dictionary_names = {}  # Dictionary where the keys are the last names and the values are the first names
 
-    file_names = open("nom_prenom", "r", encoding='utf-8')  # Text file containing every first and last name
+    file_names = open("nom_prenom.txt", "r", encoding='utf-8')  # Text file containing every first and last name
     lines = file_names.readlines()  # .readlines() turns the text file into a list
 
     for i in range(0, len(lines), 3):  # Increment by three to skip the line that doesn't include anything
@@ -51,7 +51,7 @@ def president_first_name() -> dict:
 def president_full_name(dico: dict):
     """
     Prints the full name of every president
-    :param dico: List of strings containing the full name of every president.
+    :param dico: List of strings containing the full name of every president (obtained from presidents_first_name()).
     :return: Prints out every string in the list
     """
 
@@ -67,8 +67,8 @@ def cleaned_speech(list_speeches):
     :return: Nothing
     """
 
-    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\""]  # Every possible special character to remove
-
+    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\"", ">", "<"]
+    # Every possible special character to remove
     for file_name in list_speeches:  # Name of every file in the speeches folder
 
         lowercase_file = open("./cleaned/" + file_name, "w", encoding='utf-8')  # Create a new file with the same name-
@@ -94,14 +94,15 @@ def cleaned_speech(list_speeches):
         normal_file.close()  # Close the unmodified speech.
 
 
-def cleaned_text(text):
+def cleaned_text(text : str) -> str:
     """
     Instead of taking in a directory, this function only needs text
     :param text: Str the text that you want filtered
     :return: Str after being "standardized
     """
 
-    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\""]  # Every possible special character to remove
+    special_characters_remove = [".", ",", "!", "?", ":", ";", "`", "\"", ">", "<"]
+    # Every possible special character to remove
 
     temp = ""  # New string
     lowercase_text = text.lower()  # .lower() turns every letter into its lowercase counterpart

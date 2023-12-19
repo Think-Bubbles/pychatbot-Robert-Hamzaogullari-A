@@ -15,9 +15,9 @@ import text_treatment
 
 path = "./speeches/"
 cleaned_path = "./cleaned/"
-files = extract_files.list_of_files(cleaned_path, ".txt")
-score_IDF = tf_idf_related.score_IDF
-score_TF_IDF_Array = tf_idf_related.process_final_2DArray(cleaned_path)
+
+score_idf = tf_idf_related.score_IDF
+score_TF_IDF_Array = tf_idf_related.calcul_TF_IDF_matrix(cleaned_path, extract_files.list_of_all_file_names)
 all_keys = tf_idf_related.list_words(cleaned_path)
 
 
@@ -73,12 +73,12 @@ def question_TF_IDF(words_dict_TF: dict):
     :return: Dictionary containing the TF-IDF scores of all those words
     """
 
-    question_dict_TF_IDF = score_IDF  # Keep the same pre-existing IDF scores
+    question_dict_TF_IDF = score_idf  # Keep the same pre-existing IDF scores
 
     for word in question_dict_TF_IDF.keys():
 
         if word in words_dict_TF:
-            question_dict_TF_IDF[word] = score_IDF[word] * words_dict_TF[word]  # Same IDF times the question's TF
+            question_dict_TF_IDF[word] = score_idf[word] * words_dict_TF[word]  # Same IDF times the question's TF
         else:
             question_dict_TF_IDF[word] = 0  # If a word in the folders text files isn't in the question we don't care
 
@@ -152,7 +152,7 @@ def most_relevant_document(question_tf_idf, folder_tf_idf, list_files):
     mostRelevantDocument = 0
     temp = 0
 
-    for i in range(len(files)):
+    for i in range(len(list_files)):
 
         temp_array = []
         for j in range(len(folder_tf_idf)):

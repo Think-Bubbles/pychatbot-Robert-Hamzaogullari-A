@@ -22,5 +22,5 @@ def list_of_files(directory, extension):
     return file_names
 
 
-number_of_files = len(list_of_files("./cleaned/", ".txt"))
-files = list_of_files("./cleaned/", ".txt")
+list_of_all_file_names = list_of_files("./cleaned/", ".txt")
+number_of_files = len(list_of_all_file_names)
