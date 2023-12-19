@@ -35,7 +35,7 @@ TIn order to use this program, please insure that you have the following install
 
 ## Known bugs 
 
-As of the latest update ( December 13th 2023), no issues have been found. Although, if you happen to notice any errors or inconsistencies please inform one of the main contributors.
+As of the latest update ( December 19th 2023), the only issue we've encountered is with launching the chatbot, upon the first execution, the programme fails, but when running it a second time, it answers the question perfectly..
 
 ## Contributors 
 
