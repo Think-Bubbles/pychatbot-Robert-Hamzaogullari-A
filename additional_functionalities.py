@@ -206,7 +206,7 @@ def request_highest_tf_idf_file():
     Determines the file with the highest TF-IDF score
     :return: Nothing
     """
-    for i in range(8):  # Loop to browse text by text
+    for i in range(len(extract_files.list_of_all_file_names)):  # Loop to browse text by text
         temp, index = 0, 0  # Store the score and the position of the highest value
 
         for j in range(len(tf_idf_array)):  # Loop to browse TF-IDF scores of word in a text

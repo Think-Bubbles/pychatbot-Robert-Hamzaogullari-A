@@ -139,7 +139,24 @@ def similarity_calculation(vector1: list, vector2: list):
     return finalscore
 
 
-def most_relevant_document(question_tf_idf, folder_tf_idf, list_files):
+def files_with_important_word(important_word: str, file_names : list) -> list:
+    """
+    Filters files and only keeps those that contain the most important word of our question
+    :param file_names: List containing all the files
+    :param important_word: Str the word with the highest tf-idf score in a given sentence
+    :return: List of strings containing the name of the files that contain that word at least once
+    """
+
+    files_with_word = []
+    for file in file_names: # Determine which file(s) contain(s) the most important word of the question
+        opened_file = open("./cleaned/" + file, encoding='utf-8')
+        if important_word in opened_file.read():  # Search through all the words in the file
+            files_with_word.append(file)
+
+    return files_with_word
+
+
+def most_relevant_document(question_tf_idf, folder_tf_idf, list_files : list) -> str:
     """
     Given two sets of TF-IDF scores, it'll compare every Folder's TF-IDF score to the question's TF-IDF and determine
     the most resembling folder
@@ -174,13 +191,10 @@ def highest_tf_idf(scores):
 
     if type(scores) is dict:
         highest_tf_idf_word = 0  # Stocks the highest TF-IDF value
+        word = ""
         for key in scores.keys():
-            if type(scores[key]) is list:  # If the dictionary has 1D arrays
-                total = 0
-                for value in scores[key]:  # Sum all the elements in the list
-                    total += value
-            else:  # If not then it's just an integer
-                total = scores[key]
+
+            total = scores[key]
             if total > highest_tf_idf_word:  # If we find a new highest value
                 highest_tf_idf_word = scores[key]  # Keep track of the value
                 word = key  # Keep track of the word
@@ -188,7 +202,7 @@ def highest_tf_idf(scores):
 
     elif type(scores) is list:
         highest_tf_idf_word = 0
-        line = 0
+        line, index = 0, 0
         for line in range(len(scores)):
             total = 0
             for column in range(line):
@@ -197,7 +211,7 @@ def highest_tf_idf(scores):
                     highest_tf_idf_word = total
                     index = line  # Since we've previously sorted all the words in the folder we can easily track
                     # which word the value corresponds to
-        return all_keys[line]
+        return all_keys[index]
 
 
 def response_generation(file_name: str, important_word: str, quest: str):
@@ -225,7 +239,7 @@ def response_generation(file_name: str, important_word: str, quest: str):
             break
 
     for sentence in sentences:
-        if important_word in sentence:  # If we find the word we're looking for
+        if important_word in sentence.lower():  # If we find the word we're looking for
             words_in_sentence = sentence.split()  # Split up the sentence into words
             words_in_sentence[0] = words_in_sentence[0].lower()  # Incase the original sentence starts with an uppercase
             for word in range(len(words_in_sentence) - 1):  # -1 to check the next word.

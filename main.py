@@ -4,6 +4,7 @@
 This is the main file where everything converges, only the menu is here, everything else is imported from the other
 files, rendering everything much easier to understand and trace back.
 """
+import extract_files
 # ______________________________________________Functions from part 2__________________________________________________#
 
 from extract_files import *
@@ -18,7 +19,7 @@ path_cleaned = "./cleaned/"
 text_treatment.cleaned_speech(list_of_all_file_names)
 
 print("Welcome to our Chatbot project! \n")
-help = ("First of all, you have 3 main choices at the beginning: \n "
+helper = ("First of all, you have 3 main choices at the beginning: \n "
         "- Firstly there is the \"functionalities\" section of the chatbot, which will allow you to select "
         "a number of \n  different options in order to extract the information you want out of the texts."
         "\n - Next up is the true \"Chatbot\" aspect of this program. You can enter any question you like "
@@ -32,7 +33,7 @@ while True:
 
         if guide.lower() == 'yes' or guide.lower() == "y":
             print("\nGreat! Let me provide you with a quick guide.\n")
-            print(help)
+            print(helper)
             break
         elif guide.lower() == 'no' or guide.lower() == "n":
             print("No problem! Let's proceed without a guide.")
@@ -61,7 +62,7 @@ while global_command_status:
         print("Thanks for stopping by, we hope you enjoyed yourself!")
 
     elif global_command == "/help" or global_command == "/h":
-        print(help)
+        print(helper)
 
     elif global_command == "1":
 
@@ -71,8 +72,7 @@ while global_command_status:
             print("3. See the most repeated words by president Chirac")
             print("4. See the presidents who talked about \"Nation\" and the one who repeated it the most")
             print("5. Learn who was the first president to talk about climate and/or ecology")
-            print("6. Show the words that all presidents mentioned apart from the \"unimportant words\"")
-            print("7. For any extra functionalities tailored to you")
+            print("6. For any extra functionalities tailored to you")
             print("\"Back\" Return to main menu")
             sub_command = input().lower()
 
@@ -85,7 +85,7 @@ while global_command_status:
                 break
 
             elif sub_command == "/help":
-                print("\n", help, "\n")
+                print("\n", helper, "\n")
 
             elif sub_command == "1":
                 additional_functionalities.request_redundant_words(0.0, list_of_all_file_names)
@@ -110,19 +110,14 @@ while global_command_status:
                 print()
 
             elif sub_command == "6":
-                additional_functionalities.request_common_words(list_of_all_file_names,
-                                                                text_treatment.president_last_name(
-                                                                    list_of_all_file_names))
-                print()
-
-            elif sub_command == "7":
 
                 while True:
-                    print("-0- Return to the previous menu")
-                    print("-1- Select a number and any number that has an importance below it will be shown")
-                    print("-2- Select a president to find out which word he said the most often")
-                    print("-3- Select a word and find out which presidents mentioned it")
-                    print("-4- Prints the most important word of every text")
+                    print("1. Select a number and any number that has an importance below it will be shown")
+                    print("2. Select a president to find out which word he said the most often")
+                    print("3. Select a word and find out which presidents mentioned it")
+                    print("4. Prints the most important word of every text")
+                    print("5. Show the words that all presidents mentioned apart from the \"unimportant words\"")
+                    print("\n\"Back\" Return to the previous menu")
                     inner_command = input().lower()
 
                     if inner_command == "back" or inner_command == "b":
@@ -133,7 +128,7 @@ while global_command_status:
                         break
 
                     elif inner_command == "/help":
-                        print("\n", help, "\n")
+                        print("\n", helper, "\n")
 
                     elif inner_command == "1":
                         lvl = float(input("Enter a number: "))
@@ -157,6 +152,11 @@ while global_command_status:
                         additional_functionalities.request_highest_tf_idf_file()
                         print()
 
+                    elif inner_command == "5":
+                        additional_functionalities.request_common_words(list_of_all_file_names,
+                                                                        text_treatment.president_last_name(
+                                                                            list_of_all_file_names))
+                        print()
                     else:
                         print("Invalid command")
                         print()
@@ -183,3 +183,24 @@ while global_command_status:
                 break
             print("This question cannot be be answered with our current documents.")
             user_question = input("Please enter your question: ")
+
+        entered_question = Question_Answer.tokenise_question(user_question) # Tokenise the question to use it afterward
+        question_document_common_words = Question_Answer.search_related_words(entered_question) # Search for words in
+        # the question that are also in the corpus of documents
+        question_TF_score = Question_Answer.question_TF(question_document_common_words) # Calculate the TF score for the
+        # question
+        question_TF_IDF_score = Question_Answer.question_TF_IDF(question_TF_score) # Based off of the question's TF
+        # Score, it determines the question's TF-IDF score alongside the corpus of documents
+        question_TF_IDF_score_conversion = Question_Answer.TF_IDF_conversion(question_TF_IDF_score) # Turn it into a
+        # 2D array
+        question_most_important_word = Question_Answer.highest_tf_idf(question_TF_IDF_score)
+        question_important_word_in_files = Question_Answer.files_with_important_word(question_most_important_word,
+                                                                                     extract_files.list_of_all_file_names)
+        #
+        question_most_similar_document = Question_Answer.most_relevant_document(question_TF_IDF_score_conversion,
+                                                                                Question_Answer.score_TF_IDF_Array,
+                                                                                question_important_word_in_files)
+
+        final_answer = Question_Answer.response_generation(question_most_similar_document, question_most_important_word,
+                                                           user_question)
+        print(final_answer)
